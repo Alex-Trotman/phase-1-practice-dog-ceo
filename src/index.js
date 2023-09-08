@@ -1,30 +1,74 @@
-const imagesContainer = document.getElementById('dog-image-container')
-
-
-const imgUrl = "https://dog.ceo/api/breeds/image/random/4";
-
-const dogImageContainer = document.getElementById('dog-image-container')
-
 document.addEventListener("DOMContentLoaded", function() {
-    fetch(imgUrl)
-      .then(function(response) {
-        return response.json();
-      })
-      .then((data) => {
-            data.forEach(function(imageUrl){
-                const img = document.createElement('img')
-                img.src = imgUrl;
-                imagesContainer.appendChild(img)
-            })
-      })
-      .catch(function(error) {
-        console.log("Error fetching images:", error);
+  const imagesContainer = document.getElementById('dog-image-container');
+
+  const imgUrl = "https://dog.ceo/api/breeds/image/random/4";
+
+  fetch(imgUrl)
+    .then(function(response) {
+      return response.json();
+    })
+    .then((data) => {
+      data.message.forEach(function(imageUrl) {
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        imagesContainer.appendChild(img);
       });
-  });
+    })
+    .catch(function(error) {
+      console.log("Error fetching images:", error);
+    });
 
+    // Challenge 2
 
+    const dogBreedsContainer = document.getElementById('dog-breeds');
 
+    const breedUrl = "https://dog.ceo/api/breeds/list/all";
 
+  fetch(breedUrl)
+    .then(function(response) {
+      return response.json();
+    })
+    .then((data) => {
+      const breeds = data.message;
+      for (let breed in breeds) {
+        const breedItem = document.createElement('li');
+        breedItem.innerText = breed;
+        dogBreedsContainer.appendChild(breedItem);
+    
+        breedItem.addEventListener("click", function() {
+          breedItem.style.color = "red"; // You can choose any color of your liking here
+        });
+      }
+    })
+    .catch(function(error) {
+      console.log("Error fetching images:", error);
+    });
 
+    const dropdown = document.getElementById      ('breed-dropdown');
+      dropdown.addEventListener('change', function() {
+      const selectedLetter = dropdown.value;
+      // Call a function to update the breeds based on the selected letter
+      updateBreeds(selectedLetter);
+   });
+   function updateBreeds(selectedLetter) {
+    // Get all the breed elements
+    const breeds = document.getElementsByClassName('breed');
 
-console.log('%c HI', 'color: firebrick')
+    // Loop through each breed element
+    for (let i = 0; i < breeds.length; i++) {
+      const breed = breeds[i];
+      const breedName = breed.innerText.toLowerCase();
+
+      // Check if the breed name starts with the selected letter
+      if (breedName.startsWith(selectedLetter)) {
+        // If it does, show the breed
+        breed.style.display = 'block';
+      } else {
+        // If it doesn't, hide the breed
+        breed.style.display = 'none';
+      }
+    }
+  }
+});
+
+console.log('%c HI', 'color: firebrick');
