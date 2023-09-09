@@ -23,13 +23,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const dogBreedsContainer = document.getElementById('dog-breeds');
 
     const breedUrl = "https://dog.ceo/api/breeds/list/all";
-
+    let breeds = [];
   fetch(breedUrl)
     .then(function(response) {
       return response.json();
     })
     .then((data) => {
-      const breeds = data.message;
+      breeds = data.message;
       for (let breed in breeds) {
         const breedItem = document.createElement('li');
         breedItem.innerText = breed;
@@ -44,28 +44,27 @@ document.addEventListener("DOMContentLoaded", function() {
       console.log("Error fetching images:", error);
     });
 
-    const dropdown = document.getElementById      ('breed-dropdown');
+
+
+
+    const dropdown = document.getElementById('breed-dropdown');
       dropdown.addEventListener('change', function() {
       const selectedLetter = dropdown.value;
       // Call a function to update the breeds based on the selected letter
       updateBreeds(selectedLetter);
    });
-   function updateBreeds(selectedLetter) {
-    // Get all the breed elements
-    const breeds = document.getElementsByClassName('breed');
 
-    // Loop through each breed element
-    for (let i = 0; i < breeds.length; i++) {
-      const breed = breeds[i];
-      const breedName = breed.innerText.toLowerCase();
-
-      // Check if the breed name starts with the selected letter
-      if (breedName.startsWith(selectedLetter)) {
-        // If it does, show the breed
-        breed.style.display = 'block';
-      } else {
-        // If it doesn't, hide the breed
-        breed.style.display = 'none';
+    function updateBreeds(selectedLetter){
+      dogBreedsContainer.innerHTML = ''
+      for (let breed in breeds){
+        if (breed.startsWith(selectedLetter)){
+          const breedItem = document.createElement('li');
+          breedItem.innerText = breed;
+          dogBreedsContainer.appendChild(breedItem);
+    
+          breedItem.addEventListener("click", function() {
+          breedItem.style.color = "red"; // You can choose any color of your liking here
+        })
       }
     }
   }
